@@ -35,7 +35,7 @@ switch(command){
         break;
     case 'spotify-this-song': spotifyThis();
         break;
-    case 'movie-this':
+    case 'movie-this': movieThis();
         break;
     case 'do-what-it-says':
         break;
@@ -59,9 +59,7 @@ function myTweets(){
 }
 
 function spotifyThis(){
-    // if(title !== null) title.join(' ');
-    console.log(title)
-    // search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
+
     spotify.search({ type: 'track', query: title })
   .then(function(response) {
     console.log('Artist: ' + response.tracks.items[0].artists[0].name);
@@ -77,6 +75,27 @@ function spotifyThis(){
   });
 }
 
+function movieThis(){
+    
+    var URL = "http://www.omdbapi.com/?t=" + title + "&tomatoes=true&y=&plot=short&r=json&apikey=trilogy";
+    request(URL, function (error, response, data){
+        if (error) console.log(error)
+        let newData = JSON.parse(data);
+        console.log("Searching for movie");
+        console.log(`Title: ${newData.Title}\nYear: ${newData.Year}\nIMDB Rating: ${newData.Ratings[0].Value}\nRotten Tomatoes Rating: ${newData.Ratings[1].Value}\nCountry: ${newData.Country}\nLanuage: ${newData.Language}\nPlot: ${newData.plot}\nActors: ${newData.Actors}`);
+		});
+}
+
+//      ```
+//        * Title of the movie.
+//        * Year the movie came out.
+//        * IMDB Rating of the movie.
+//        * Rotten Tomatoes Rating of the movie.
+//        * Country where the movie was produced.
+//        * Language of the movie.
+//        * Plot of the movie.
+//        * Actors in the movie.
+//      ```
 // 2. `node liri.js spotify-this-song '<song name here>'`
 
 //    * This will show the following information about the song in your terminal/bash window
@@ -107,16 +126,7 @@ function spotifyThis(){
 
 //    * This will output the following information to your terminal/bash window:
 
-//      ```
-//        * Title of the movie.
-//        * Year the movie came out.
-//        * IMDB Rating of the movie.
-//        * Rotten Tomatoes Rating of the movie.
-//        * Country where the movie was produced.
-//        * Language of the movie.
-//        * Plot of the movie.
-//        * Actors in the movie.
-//      ```
+
 
 //    * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
      
