@@ -2,21 +2,23 @@
 // require("dotenv").config();
 // var keys = require("./keys");
 var Twitter = require("twitter");
-// var client = new Twitter(keys.twitterKeys);
-var client = new Twitter({
+var client = new Twitter({  //HARD CODED-ENV wasnt working!
     consumer_key: 'rHLR97YXBPEIgAPOVAU340Vls',
     consumer_secret: 'hnVGm3wAwLgNNJb3Z87snxpBcyB7ZtxE4i59PGTmf1rE8FHX7b',
     access_token_key: '563146661-GkwLJqgz4iWxG06fSq4tG2OmyxosIwXPWjQvUDCu',
     access_token_secret: '4td893rnojnPo1tyNdzr7Ahah5XwduOi3E6Aqpyg3ajKu'
   });
-// var client = new Twitter(twitterKey.twitterKeys);
 var request = require("request");
-var spotify = require("spotify");
+
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify({
+    id: 'd3bbb9965b4e421ab9108ba88a69ae6a',
+    secret: '6495cc7c846d4b88b3de6b39e26b3034'});
 // var spotify = new spotify(keys.spotify);
 
 
 let command = process.argv[2];
-let title = process.argv.splice[3];
+let title = process.argv.splice(3).join(' ');
 // var fs = require("fs");							//NPM package for reading and writing files
 
 // var keys = require("./keys.js");				//Twitter keys and access tokens
@@ -27,8 +29,6 @@ let title = process.argv.splice[3];
 
 // var spotify = require("spotify");				//NPM package for spotify
 
-// var command = process.argv[2];
-// var artName = process.argv[3];
 
 switch(command){
     case 'my-tweets': myTweets();
@@ -59,19 +59,23 @@ function myTweets(){
 }
 
 function spotifyThis(){
-    // Spotify.search({ 
-	// 	type: 'track', 
-	// 	query: userSelection
-	// }, function(err, data) {
-	//     if (err) throw err;
-	//     //this sets the variable music to get the initial information from the object, just so it's easier to call in the for loop below
-		
-	// });
+    // if(title !== null) title.join(' ');
+    console.log(title)
+    // search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
+    spotify.search({ type: 'track', query: title })
+  .then(function(response) {
+    console.log('Artist: ' + response.tracks.items[0].artists[0].name);
+    console.log('Song: ' + response.tracks.items[0].name);
+    console.log('Preview Link: ' + response.tracks.items[0].href);
+    console.log('Album: ' + response.tracks.items[0].album.name)
+    // console.log(response.tracks.items[0].artists[0].name);
 
+    
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
 }
-// 1. `node liri.js my-tweets`
-
-//    * This will show your last 20 tweets and when they were created at in your terminal/bash window.
 
 // 2. `node liri.js spotify-this-song '<song name here>'`
 

@@ -18,9 +18,11 @@
   "homepage": "https://github.com/clewis1337/liri-node-app#readme",
   "dependencies": {
     "env": "0.0.2",
+    "node-spotify-api": "^1.0.7",
     "request": "^2.87.0",
     "require": "^2.4.20",
     "spotify": "^0.3.0",
+    "spotify-web-api-js": "^0.24.0",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
