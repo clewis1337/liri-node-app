@@ -1,12 +1,18 @@
-var keys = require("./keys.js");
-require("dotenv").config();
 
+// require("dotenv").config();
+// var keys = require("./keys");
 var Twitter = require("twitter");
 // var client = new Twitter(keys.twitterKeys);
-var client = new Twitter(twitterKey.twitterKeys);
+var client = new Twitter({
+    consumer_key: 'rHLR97YXBPEIgAPOVAU340Vls',
+    consumer_secret: 'hnVGm3wAwLgNNJb3Z87snxpBcyB7ZtxE4i59PGTmf1rE8FHX7b',
+    access_token_key: '563146661-GkwLJqgz4iWxG06fSq4tG2OmyxosIwXPWjQvUDCu',
+    access_token_secret: '4td893rnojnPo1tyNdzr7Ahah5XwduOi3E6Aqpyg3ajKu'
+  });
+// var client = new Twitter(twitterKey.twitterKeys);
 var request = require("request");
 var spotify = require("spotify");
-// var spotify = new Spotify(keys.spotify);
+// var spotify = new spotify(keys.spotify);
 
 
 let command = process.argv[2];
@@ -27,7 +33,7 @@ let title = process.argv.splice[3];
 switch(command){
     case 'my-tweets': myTweets();
         break;
-    case 'spotify-this-song':
+    case 'spotify-this-song': spotifyThis();
         break;
     case 'movie-this':
         break;
@@ -37,29 +43,31 @@ switch(command){
 }
 
 function myTweets(){
-    var tweetsLength;
-    var params = {screen_name: 'terminatorjohn1', count: '20'};
-    client.get('statuses/user_timeline', params, function(error, tweets, response){
-		if(error) console.log('Error in tweet');
-        console.log(tweets);
-		tweetsLength = 0;
+    client.get('statuses/user_timeline', function(error, tweets, response) {
+    if (!error)  consol
+    e.log(tweets)
+    let maxTweets = 20;
+    if(tweets.length < 20){
+        maxTweets = tweets.length;
+    }
+    for (var i = 0; i < tweets.length; i++) {
+        console.log("\nCreated at: " + tweets[i].created_at);
+        console.log(tweets[i].text);
 
-		for(var i=0; i<tweets.length; i++){
-			tweetsLength ++;
-		}
-		if (tweetsLength > 20){
-			tweetsLength = 20;
-		}
-		for (var i=0; i<tweetsLength; i++){
-			console.log("Tweet " + (i+1) + " created on: " + tweets[i].created_at);
-			console.log("Tweet " + (i+1) + " text: " + tweets[i].text);
-			console.log("--------------------------------------------------------------");
+    }
+});
+}
 
-			appendFile("Tweet " + (i+1) + " created on: " + tweets[i].created_at);
-			appendFile("Tweet " + (i+1) + " text: " + tweets[i].text);
-			appendFile("--------------------------------------------------------------");
-		}
-	});
+function spotifyThis(){
+    // Spotify.search({ 
+	// 	type: 'track', 
+	// 	query: userSelection
+	// }, function(err, data) {
+	//     if (err) throw err;
+	//     //this sets the variable music to get the initial information from the object, just so it's easier to call in the for loop below
+		
+	// });
+
 }
 // 1. `node liri.js my-tweets`
 
